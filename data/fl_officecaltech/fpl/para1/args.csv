@@ -1,0 +1,2 @@
+communication_epoch,local_epoch,parti_num,rand_dataset,dataset,pri_aug,online_ratio,learning_decay,averaing,infoNCET,T,weight,reserv_ratio,local_lr,local_batch_size,Note,arch
+100,10,10,True,fl_officecaltech,weak,1,False,weight,0.02,0.05,1,0.1,0.01,64,+ MSE,res10

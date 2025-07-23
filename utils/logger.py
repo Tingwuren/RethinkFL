@@ -55,9 +55,11 @@ class CsvWriter:
             with open(args_path, mode='r') as inp:
                 reader = csv.reader(inp)
                 for rows in reader:
-                    key_value_list.append(rows)
-            for index,_ in enumerate(key_value_list[0]):
-                dict_from_csv[key_value_list[0][index]]=key_value_list[1][index]
+                    if rows:  # Only append non-empty rows
+                        key_value_list.append(rows)
+            if len(key_value_list) >= 2:  # Ensure we have both header and data rows
+                for index,_ in enumerate(key_value_list[0]):
+                    dict_from_csv[key_value_list[0][index]]=key_value_list[1][index]
             if args == dict_from_csv:
                 path = para_path
                 exist_para = True
