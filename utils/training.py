@@ -11,6 +11,29 @@ from collections import Counter
 
 def global_evaluate(model: FederatedModel, test_dl: DataLoader, setting: str, name: str) -> Tuple[list, list]:
     accs = []
+    # For local baseline: evaluate each client's model and average per test loader
+    if getattr(model, 'NAME', None) == 'local':
+        for j, dl in enumerate(test_dl):
+            client_accs = []
+            for net in model.nets_list:
+                status = net.training
+                net.eval()
+                correct, total, top1, top5 = 0.0, 0.0, 0.0, 0.0
+                for batch_idx, (images, labels) in enumerate(dl):
+                    with torch.no_grad():
+                        images, labels = images.to(model.device), labels.to(model.device)
+                        outputs = net(images)
+                        _, max5 = torch.topk(outputs, 5, dim=-1)
+                        labels = labels.view(-1, 1)
+                        top1 += (labels == max5[:, 0:1]).sum().item()
+                        top5 += (labels == max5).sum().item()
+                        total += labels.size(0)
+                top1acc = round(100 * top1 / total, 2)
+                client_accs.append(top1acc)
+                net.train(status)
+            accs.append(round(float(np.mean(client_accs)), 2))
+        return accs
+
     net = model.global_net
     status = net.training
     net.eval()

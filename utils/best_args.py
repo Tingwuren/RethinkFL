@@ -22,6 +22,11 @@ best_args = {
             'local_lr': 0.01,
             'local_batch_size': 64,
             'Note': '+ MSE'
+        },
+        
+        'local': {
+            'local_lr': 0.01,
+            'local_batch_size': 64,
         }
     },
     'fl_officecaltech': {
@@ -46,6 +51,11 @@ best_args = {
             'local_lr': 0.01,
             'local_batch_size': 64,
             'Note': '+ MSE'
+        },
+        
+        'local': {
+            'local_lr': 0.01,
+            'local_batch_size': 64,
         }
     }
 }
